@@ -1,0 +1,62 @@
+﻿@model MyFriends.Models.Friend
+
+@{
+    ViewData["Title"] = "Details";
+}
+<h1>@("פרטי החבר "+Model.FullName)</h1>
+
+<div>
+    <h4>@Model.FirstName</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+        @if(Model.Images.Count() > 0)
+        foreach(Image image in Model.Images)
+            if(image.myImage != null)
+                {
+                    <dt class="col-sm-2">
+                        תמונה
+                    </dt>
+                    <dd class="col-sm-10">
+                        <img src="data:image;base64,@Convert.ToBase64String(image.myImage)" width="60" height="60" />
+                    </dd>
+                }
+    </dl>
+</div>
+<hr/>
+<button type="file" onclick="addImage()">הוסף תמונה</button>
+<div id="add-image-div" style="display:none">
+    <form asp-action="AddImage" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="ID" hidden="hidden" />
+        <div class="form-group">
+            <label asp-for="setImage" class="control-label"></label>
+            <input asp-for="setImage"  type="file" class="form-control" />
+            <span asp-validation-for="setImage" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="הוספה" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<div>
+    @Html.ActionLink("עריכה", "Edit", new {id = Model.ID} ) |
+    <a asp-action="Index">חזרה אחורה</a>
+</div>
